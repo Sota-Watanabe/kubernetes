@@ -29,7 +29,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 	"google.golang.org/grpc"
 
 	"github.com/armon/circbuf"
@@ -142,6 +141,17 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 
 	// Step 3: start the container.
 	klog.V(3).Infof("so-ta: 7 kuberuntime_container.go")
+	envs := containerConfig.GetEnvs()
+	// klog.V(3).Infof("so-ta: type=%v", reflect.TypeOf(envs))
+	display := ""
+	for _, n := range envs{
+		klog.V(3).Infof("so-ta: %v", n.Key)
+		if n.Key == "K_SERVICE" {
+			display = n.Value
+			break
+		}
+	}
+	klog.V(3).Infof("so-ta: display=%v", display)
 	err = m.runtimeService.StartContainer(containerID)
 	if err != nil {
 		m.recordContainerEvent(pod, container, containerID, v1.EventTypeWarning, events.FailedToStartContainer, "Error: %v", grpc.ErrorDesc(err))
