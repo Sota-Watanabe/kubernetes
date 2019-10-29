@@ -156,7 +156,9 @@ func (d *kubeDockerClient) CreateContainer(opts dockertypes.ContainerCreateConfi
 func (d *kubeDockerClient) StartContainer(id string) error {
 	ctx, cancel := d.getTimeoutContext()
 	defer cancel()
+	klog.V(3).Infof("so-ta: 2 kube_docker_client.go")
 	err := d.client.ContainerStart(ctx, id, dockertypes.ContainerStartOptions{})
+	klog.V(3).Infof("so-ta: ctx=%v, opt=%v", ctx, dockertypes.ContainerStartOptions{})
 	if ctxErr := contextError(ctx); ctxErr != nil {
 		return ctxErr
 	}

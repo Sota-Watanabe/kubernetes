@@ -18,7 +18,7 @@ package libdocker
 
 import (
 	"time"
-
+	"k8s.io/klog" //add
 	dockertypes "github.com/docker/docker/api/types"
 	dockercontainer "github.com/docker/docker/api/types/container"
 	dockerimagetypes "github.com/docker/docker/api/types/image"
@@ -99,7 +99,7 @@ func (in instrumentedInterface) CreateContainer(opts dockertypes.ContainerCreate
 func (in instrumentedInterface) StartContainer(id string) error {
 	const operation = "start_container"
 	defer recordOperation(operation, time.Now())
-
+	klog.V(3).Infof("so-ta: 3 instumrnted_client.go")
 	err := in.client.StartContainer(id)
 	recordError(operation, err)
 	return err

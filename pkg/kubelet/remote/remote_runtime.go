@@ -214,7 +214,7 @@ func (r *RemoteRuntimeService) CreateContainer(podSandBoxID string, config *runt
 func (r *RemoteRuntimeService) StartContainer(containerID string) error {
 	ctx, cancel := getContextWithTimeout(r.timeout)
 	defer cancel()
-
+	klog.V(3).Infof("so-ta: 5 remote_runtime")
 	_, err := r.runtimeClient.StartContainer(ctx, &runtimeapi.StartContainerRequest{
 		ContainerId: containerID,
 	})

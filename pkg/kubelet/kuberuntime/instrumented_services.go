@@ -18,6 +18,7 @@ package kuberuntime
 
 import (
 	"time"
+	"k8s.io/klog" //add
 
 	internalapi "k8s.io/cri-api/pkg/apis"
 	runtimeapi "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
@@ -93,6 +94,7 @@ func (in instrumentedRuntimeService) StartContainer(containerID string) error {
 	const operation = "start_container"
 	defer recordOperation(operation, time.Now())
 
+	klog.V(3).Infof("so-ta: 6 instrumented_service.go")
 	err := in.service.StartContainer(containerID)
 	recordError(operation, err)
 	return err
