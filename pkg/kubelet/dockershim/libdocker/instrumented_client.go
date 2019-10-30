@@ -100,6 +100,7 @@ func (in instrumentedInterface) StartContainer(id string) error {
 	const operation = "start_container"
 	defer recordOperation(operation, time.Now())
 	klog.V(3).Infof("so-ta: 3 instumrnted_client.go")
+	klog.V(3).Infof("so-ta: containerID + , = %v", id)
 	err := in.client.StartContainer(id)
 	recordError(operation, err)
 	return err

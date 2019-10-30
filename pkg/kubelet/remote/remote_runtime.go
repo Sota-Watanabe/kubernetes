@@ -215,6 +215,7 @@ func (r *RemoteRuntimeService) StartContainer(containerID string) error {
 	ctx, cancel := getContextWithTimeout(r.timeout)
 	defer cancel()
 	klog.V(3).Infof("so-ta: 5 remote_runtime")
+	klog.V(3).Infof("so-ta: containerID + ,=%v", containerID)
 	_, err := r.runtimeClient.StartContainer(ctx, &runtimeapi.StartContainerRequest{
 		ContainerId: containerID,
 	})
