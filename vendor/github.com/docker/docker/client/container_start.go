@@ -5,7 +5,9 @@ import (
 	"net/url"
 	"k8s.io/klog" //add
 	"regexp" //add
-	"os"//add
+	// "os"//add
+	// "time"//add
+	"github.com/otiai10/copy"
 	"github.com/docker/docker/api/types"
 )
 
@@ -22,12 +24,14 @@ func (cli *Client) ContainerStart(ctx context.Context, containerID string, optio
 	containerID = req.ReplaceAllString(containerID, "")
 	
 	if kService == "helloworld-go" {
-		klog.V(3).Infof("checkpoint start!")
+		klog.V(3).Infof("so-ta: checkpoint stop!")
+		// time.Sleep(30 * time.Second)
+		klog.V(3).Infof("so-ta: checkpoint start!")
 		newname := "/var/lib/docker/containers/" + containerID + "/checkpoints/cp-helloworld-go"
-		err := os.Symlink("/cp/cp-helloworld-go/", newname)
+		err := copy.Copy("/cp/cp-helloworld-go/", newname)
 		klog.V(3).Infof("so-ta: err=%v",err)
-		klog.V(3).Infof("so-ta: containerID=%v", containerID)
-		klog.V(3).Infof("so-ta: kService =%v", kService)
+		// klog.V(3).Infof("so-ta: containerID=%v", containerID)
+		// klog.V(3).Infof("so-ta: kService =%v", kService)
 		options.CheckpointID = "cp-helloworld-go"
 		// options.CheckpointDir = "/cp/"
 	}
