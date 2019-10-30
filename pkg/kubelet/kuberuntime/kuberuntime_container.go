@@ -30,6 +30,7 @@ import (
 	"sync"
 	"time"
 	"google.golang.org/grpc"
+	"regexp" //add
 
 	"github.com/armon/circbuf"
 	"k8s.io/klog"
@@ -143,16 +144,22 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 	klog.V(3).Infof("so-ta: 7 kuberuntime_container.go")
 	envs := containerConfig.GetEnvs()
 	// klog.V(3).Infof("so-ta: type=%v", reflect.TypeOf(envs))
-	display := ""
+	kService := ""
 	for _, n := range envs{
-		klog.V(3).Infof("so-ta: %v", n.Key)
+		// klog.V(3).Infof("so-ta: %v", n.Key)
 		if n.Key == "K_SERVICE" {
-			display = n.Value
+			kService = "," + n.Value
 			break
 		}
 	}
-	klog.V(3).Infof("so-ta: display=%v", display)
+	// klog.V(3).Infof("so-ta: display=%v", kService)
+	containerID = containerID + kService
+	// klog.V(3).Infof("so-ta: kService=%v", kService)
+	klog.V(3).Infof("so-ta: containerID + ,=%v", containerID)
 	err = m.runtimeService.StartContainer(containerID)
+	req := regexp.MustCompile(`(,.*$)`)
+	containerID = req.ReplaceAllString(containerID, "")
+	klog.V(3).Infof("so-ta: containerID - ,=%v", containerID)
 	if err != nil {
 		m.recordContainerEvent(pod, container, containerID, v1.EventTypeWarning, events.FailedToStartContainer, "Error: %v", grpc.ErrorDesc(err))
 		return grpc.ErrorDesc(err), kubecontainer.ErrRunContainer
