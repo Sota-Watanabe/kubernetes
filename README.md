@@ -1,3 +1,7 @@
+# やったこと
+Kubernetesはdockerデーモンにコンテナ起動を命令している。
+今回やったことは起動するコンテナの条件によって、通常起動ではなくチェックポイントを利用した起動を命令する機能の追加。
+
 # Kubernetes
 
 [![GoDoc Widget]][GoDoc] [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/569/badge)](https://bestpractices.coreinfrastructure.org/projects/569)
